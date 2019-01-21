@@ -311,7 +311,7 @@ function autoLevelEquipment() {
             if (evaluation.StatusBorder != 'white' && evaluation.StatusBorder != 'yellow' && $equipUpgrade)
                 $equipUpgrade.style.color = evaluation.StatusBorder;
             if (evaluation.StatusBorder == 'yellow' && $equipUpgrade)
-                $equipUpgrade.style.color = 'white';
+                $equipUpgrade.style.color = evaluation.StatusBorder;
             if (equipName == 'Gym' && needGymystic) {
                 $equipName.style.color = 'white';
                 $equipName.style.border = '1px solid white';
@@ -371,8 +371,13 @@ function autoLevelEquipment() {
                 $eqName.style.color = Best[stat].Wall ? 'orange' : 'red';
                 $eqName.style.border = '2px solid red';
             }
+            // do not upgrade an equipment if we can prestige it
+            var $equipUpgrade = document.getElementById(DaThing.Upgrade);
+            if ($equipUpgrade)
+                continue;
+
             var maxmap = getPageSetting('MaxMapBonusAfterZone') && doMaxMapBonus;
-            if (BuyArmorLevels && (DaThing.Stat == 'health' || DaThing.Stat == 'block') && (!enoughHealthE || maxmap)) {
+            if (BuyArmorLevels && (DaThing.Stat == 'health' || DaThing.Stat == 'block') && (!enoughHealthE || maxmap || shouldFarm)) {
                 game.global.buyAmt = getPageSetting('gearamounttobuy');
                 if (DaThing.Equip && !Best[stat].Wall && canAffordBuilding(eqName, null, null, true)) {
                     debug('Leveling equipment ' + eqName, "equips", '*upload3');
